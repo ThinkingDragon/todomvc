@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Template • TodoMVC</title>
+		<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+		<link rel="stylesheet" href="css/app.css">
+	</head>
+	<body>
+			<section id="app" class="todoapp">
+					<header class="header">
+						<h1>todos</h1>
+						<input
+							class="new-todo"
+							placeholder="What needs to be done?"
+							v-focus
+							v-model="newTodo"
+							@keyup.enter="addTodo">
+					</header>
+					<section
+						class="main"
+						v-if="dataList.length">
+						<input
+							id="toggle-all"
+							class="toggle-all"
+							type="checkbox"
+							v-model="toggleAll">
+						<label for="toggle-all">Mark all as complete</label>
+						<ul class="todo-list">
+							<li
+								:class="{completed: item.isFinish}"
+								v-for="(item, index) in dataList"
+								:key="item.id"
+								ref="show"
+								v-show="showArr[index]"
+								@dblclick.prevent="showEdit(index)">
+								<div class="view">
+									<input
+										class="toggle"
+										type="checkbox"
+										v-model="item.isFinish"
+										:checked="item.isFinish">
+									<label>{{ item.content | date }}</label>
+									<button
+										class="destroy"
+										@click.prevent="delTodo(index)"></button>
+								</div>
+								<input
+									class="edit"
+									v-model="item.content"
+									@keyup.enter="updateTodo(index)"
+									@keyup.esc="backTodo(index)">
+							</li>
+						</ul>
+					</section>
+					<footer
+						class="footer"
+						v-if="dataList.length">
+						<span class="todo-count"><strong>{{ activeNum }}</strong> item left</span>
+						<ul class="filters">
+							<li>
+								<a :class="{selected: activeBtn === 1}" href="#/">All</a>
+							</li>
+							<li>
+								<a :class="{selected: activeBtn === 2}" href="#/active">Active</a>
+							</li>
+							<li>
+								<a :class="{selected: activeBtn === 3}" href="#/completed">Completed</a>
+							</li>
+						</ul>
+						<button
+							class="clear-completed"
+							v-if="activeNum !== dataList.length"
+							@click.prevent="delAll">Clear completed</button>
+					</footer>
+				</section>
+				<footer class="info">
+					<p>Double-click to edit a todo</p>
+					<p>Template by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
+					<p>Created by <a href="http://todomvc.com">you</a></p>
+					<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+				</footer>
+				<script src="node_modules/todomvc-common/base.js"></script>
+				<script src="node_modules/vue/dist/vue.js"></script>
+				<script src="js/app.js"></script>
+			</body>
+	</body>
+</html>
